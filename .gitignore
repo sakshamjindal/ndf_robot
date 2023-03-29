@@ -33,19 +33,10 @@ temp
 rgb
 pngs
 bash_scripts
-/src/utils/libmcubes/mcubes.cpp
-/src/utils/libsimplify/simplify_mesh.cpp
-/src/utils/libsimplify/build
-/PlushSim/assets/
-/PlushSim/interaction_sequence/
-.DS_Store
-
-data_plush/
-data_ndf/
 
 *.npy
 */*/*.npz
 src/ndf_robot/data/training_data/*/*.npz
 *.pth
 *.p
-src/src/*
+logs/*

@@ -4,7 +4,7 @@ import configargparse
 import torch
 from torch.utils.data import DataLoader
 
-sys.path.append("./")
+sys.path.append("./src/")
 
 import ndf_robot.model.vnn_occupancy_net_pointnet_dgcnn as vnn_occupancy_network
 from ndf_robot.training import summaries, losses, training, config #, dataio
@@ -50,7 +50,7 @@ root_dir = "/home/sjindal/work/ACID/data_ndf"
 category = ["teddy"]
 
 train_dataset = AcidDataset(root_dir, "train", category, transform=True, all_points=False)
-val_dataset = AcidDataset(root_dir, "val", category, transform=False)
+val_dataset = AcidDataset(root_dir, "val", category, transform=False, all_points=False)
 
 train_dataloader = DataLoader(train_dataset, batch_size=opt.batch_size, shuffle=True,
                               drop_last=True, num_workers=6)
@@ -69,6 +69,7 @@ model_parallel = model
 root_path = os.path.join(opt.logging_root, opt.experiment_name)
 
 # Define the loss
+opt.logging_root = "logs"
 summary_fn = summaries.occupancy_net
 root_path = os.path.join(opt.logging_root, opt.experiment_name)
 loss_fn = val_loss_fn = losses.occupancy_net
