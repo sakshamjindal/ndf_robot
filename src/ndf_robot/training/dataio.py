@@ -15,9 +15,11 @@ class JointOccTrainDataset(Dataset):
 
         # Path setup (change to folder where your training data is kept)
         ## these are the names of the full dataset folders
-        mug_path = osp.join(path_util.get_ndf_data(), 'training_data/mug_table_all_pose_4_cam_half_occ_full_rand_scale')
-        bottle_path = osp.join(path_util.get_ndf_data(), 'training/bottle_table_all_pose_4_cam_half_occ_full_rand_scale')
-        bowl_path = osp.join(path_util.get_ndf_data(), 'training/bowl_table_all_pose_4_cam_half_occ_full_rand_scale')
+
+        x = "./src/ndf_robot/data"
+        mug_path = osp.join(x, 'training_data/mug_table_all_pose_4_cam_half_occ_full_rand_scale')
+        bottle_path = osp.join(x, 'training/bottle_table_all_pose_4_cam_half_occ_full_rand_scale')
+        bowl_path = osp.join(x, 'training/bowl_table_all_pose_4_cam_half_occ_full_rand_scale')
 
         ## these are the names of the mini-dataset folders, to ensure everything is up and running
         # mug_path = osp.join(path_util.get_ndf_data(), 'training_data/test_mug')
@@ -62,9 +64,9 @@ class JointOccTrainDataset(Dataset):
         self.bs = bs
         self.hbs = hbs
 
-        self.shapenet_mug_dict = pickle.load(open(osp.join(path_util.get_ndf_data(), 'training_data/occ_shapenet_mug.p'), 'rb'))
-        self.shapenet_bowl_dict = pickle.load(open(osp.join(path_util.get_ndf_data(), 'training_data/occ_shapenet_bowl.p'), "rb"))
-        self.shapenet_bottle_dict = pickle.load(open(osp.join(path_util.get_ndf_data(), 'training_data/occ_shapenet_bottle.p'), "rb"))
+        self.shapenet_mug_dict = pickle.load(open(osp.join(x, 'training_data/occ_shapenet_mug.p'), 'rb'))
+        self.shapenet_bowl_dict = pickle.load(open(osp.join(x, 'training_data/occ_shapenet_bowl.p'), "rb"))
+        self.shapenet_bottle_dict = pickle.load(open(osp.join(x, 'training_data/occ_shapenet_bottle.p'), "rb"))
 
         self.shapenet_dict = {'03797390': self.shapenet_mug_dict, '02880940': self.shapenet_bowl_dict, '02876657': self.shapenet_bottle_dict}
 
