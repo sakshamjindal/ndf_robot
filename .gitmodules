@@ -1,3 +1,6 @@
 [submodule "pybullet-planning"]
 	path = pybullet-planning
 	url = https://github.com/anthonysimeonov/pybullet-planning.git
+[submodule "src/occ_net"]
+	path = src/occ_net
+	url = git@github.com:sakshamjindal/occupancy_networks.git
