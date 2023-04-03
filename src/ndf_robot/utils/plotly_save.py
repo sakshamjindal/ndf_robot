@@ -157,3 +157,163 @@ def plot3d(pts_list, colors=['black'], fname='default_3d.html',
             fig.write_image(fname)
     return fig
 
+def plot_point_clouds(points, colors, extra_data=None, size = 1, opacity = 0.8, transform=None, show=False):
+
+    """
+    points: list of Nx3 array
+    colors: list of colors (strings)
+    extra_data: list of plotly data
+    """
+
+    if not isinstance(points, list):
+        points = [points]
+    if not isinstance(colors, list):
+        colors = [colors]
+
+    import plotly.graph_objects as go
+
+    data = []
+    for point, color in zip(points, colors):
+        data.append(go.Scatter3d(
+            x=point[:, 0], y=point[:, 1], z=point[:, 2],
+            mode='markers',
+            marker=dict(
+                size=1,
+                color=color,                
+                opacity=0.8
+            )
+        ))
+
+    if extra_data is not None:
+        data += extra_data
+
+    if transform is not None:
+        local_frame =  PlotlyVisualizer().plotly_create_local_frame(transform)
+        data += local_frame
+        
+    fig = go.Figure(
+        data=data,
+        layout=dict(
+            scene=dict(
+                xaxis=dict(visible=False),
+                yaxis=dict(visible=False),
+                zaxis=dict(visible=False)
+            )
+        )
+    )
+
+    if show:
+        fig.show()
+
+    return fig
+
+class PlotlyVisualizer():
+    def __init__(self):
+        pass
+
+    def _cam_frame_scene_dict(self):
+        self.cam_frame_scene_dict = {}
+        cam_up_vec = [0, 1, 0]
+        plotly_camera = {
+            'up': {'x': cam_up_vec[0], 'y': cam_up_vec[1],'z': cam_up_vec[2]},
+            'center': {'x': 0, 'y': 0, 'z': 0},
+            'eye': {'x': -0.6, 'y': -0.6, 'z': 0.4},
+        }
+
+        plotly_scene = {
+            'xaxis': 
+                {
+                    'backgroundcolor': 'rgb(255, 255, 255)',
+                    'gridcolor': 'white',
+                    'zerolinecolor': 'white',
+                    'tickcolor': 'rgb(255, 255, 255)',
+                    'showticklabels': False,
+                    'showbackground': False,
+                    'showaxeslabels': False,
+                    'visible': False,
+                    'range': [-0.5, 0.5]},
+            'yaxis': 
+                {
+                    'backgroundcolor': 'rgb(255, 255, 255)',
+                    'gridcolor': 'white',
+                    'zerolinecolor': 'white',
+                    'tickcolor': 'rgb(255, 255, 255)',
+                    'showticklabels': False,
+                    'showbackground': False,
+                    'showaxeslabels': False,
+                    'visible': False,
+                    'range': [-0.5, 0.5]},
+            'zaxis': 
+                {
+                    'backgroundcolor': 'rgb(255, 255, 255)',
+                    'gridcolor': 'white',
+                    'zerolinecolor': 'white',
+                    'tickcolor': 'rgb(255, 255, 255)',
+                    'showticklabels': False,
+                    'showbackground': False,
+                    'showaxeslabels': False,
+                    'visible': False,
+                    'range': [-0.5, 0.5]},
+        }
+        self.cam_frame_scene_dict['camera'] = plotly_camera
+        self.cam_frame_scene_dict['scene'] = plotly_scene
+
+    @staticmethod
+    def plotly_create_local_frame(transform=None, length=0.03, show = False):
+        import plotly.graph_objects as go
+
+        if transform is None:
+            transform = np.eye(4)
+
+        x_vec = transform[:-1, 0] * length
+        y_vec = transform[:-1, 1] * length
+        z_vec = transform[:-1, 2] * length
+
+        origin = transform[:-1, -1]
+
+        lw = 8
+        x_data = go.Scatter3d(
+            x=[origin[0], x_vec[0] + origin[0]], y=[origin[1], x_vec[1] + origin[1]], z=[origin[2], x_vec[2] + origin[2]],
+            line=dict(
+                color='red',
+                width=lw
+            ),
+            marker=dict(
+                size=0.0
+            )
+        )
+        y_data = go.Scatter3d(
+            x=[origin[0], y_vec[0] + origin[0]], y=[origin[1], y_vec[1] + origin[1]], z=[origin[2], y_vec[2] + origin[2]],
+            line=dict(
+                color='green',
+                width=lw
+            ),
+            marker=dict(
+                size=0.0
+            )
+        )
+        z_data = go.Scatter3d(
+            x=[origin[0], z_vec[0] + origin[0]], y=[origin[1], z_vec[1] + origin[1]], z=[origin[2], z_vec[2] + origin[2]],
+            line=dict(
+                color='blue',
+                width=lw
+            ),
+            marker=dict(
+                size=0.0
+            )
+        )
+        if show:
+            fig = go.Figure(data=[x_data, y_data, z_data])
+            fig.show()
+
+        data = [x_data, y_data, z_data]
+        return data
+    
+    @staticmethod
+    def plot3d(*args, **kwargs):
+        return plot3d(*args, **kwargs)
+    
+    @staticmethod
+    def plot_point_clouds(*args, **kwargs):
+        return plot_point_clouds(*args, **kwargs)
+

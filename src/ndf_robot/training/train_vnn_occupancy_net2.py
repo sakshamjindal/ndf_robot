@@ -53,9 +53,9 @@ train_dataset = AcidDataset(root_dir, "train", category, transform=True, all_poi
 val_dataset = AcidDataset(root_dir, "val", category, transform=False, all_points=False)
 
 train_dataloader = DataLoader(train_dataset, batch_size=opt.batch_size, shuffle=True,
-                              drop_last=True, num_workers=6)
+                              drop_last=True)
 val_dataloader = DataLoader(val_dataset, batch_size=opt.batch_size, shuffle=True,
-                            drop_last=True, num_workers=4)
+                            drop_last=True)
 
 model = vnn_occupancy_network.VNNOccNet(latent_dim=256).cuda()
 
