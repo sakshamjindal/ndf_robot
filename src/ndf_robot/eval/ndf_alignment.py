@@ -389,7 +389,7 @@ class NDFAlignmentCheck:
         if return_scene:
             return best_scene
         
-    def visualize_alignment(self, pcd1, pcd2, frame1_tf, frame2_tf, transform = np.eye(4), show_plotly=True, show_trimesh=True):
+    def visualize_alignment(self, pcd1, pcd2, frame1_tf, frame2_tf, transform = np.eye(4), b = 0.4, show_plotly=True, show_trimesh=True):
 
         vpcd1 = copy.deepcopy(pcd1)
         vpcd2 = copy.deepcopy(pcd2)
@@ -397,7 +397,7 @@ class NDFAlignmentCheck:
         vframe2_tf = copy.deepcopy(frame2_tf)
 
         # translate for visualization
-        offset = np.array([0.4, 0, 0])
+        offset = np.array([b, 0, 0])
         #offset = np.array([0, 0, 0])
         vframe1_tf[:-1, -1] += offset
         vpcd1 = vpcd1 + offset
@@ -488,7 +488,7 @@ class NDFAlignmentCheck:
 
         return reference_act_hat 
     
-    def visualize_energy_landscape(self, pcd1, pcd2, frame1_tf, transform = np.eye(4), random_query = False, seed=0):
+    def visualize_energy_landscape(self, pcd1, pcd2, frame1_tf, transform = np.eye(4), b = 0.4, random_query = False, seed=0):
 
         pcd1 = pcd1 - np.mean(pcd1, axis=0)
         pcd2 = pcd2 - np.mean(pcd2, axis=0)
@@ -528,13 +528,13 @@ class NDFAlignmentCheck:
         point = vpcd2
         data_query=[go.Scatter3d(
                 x=point[:, 0], y=point[:, 1], z=point[:, 2],
-                mode='markers', marker=dict(size=2, colorbar=dict(thickness=20), color=distances.flatten())
+                mode='markers', marker=dict(size=1, colorbar=dict(thickness=20), color=distances.flatten())
             )
         ]
 
         # translate for visualization
         vpcd1 = copy.deepcopy(pcd1)
-        offset = np.array([0.4, 0, 0])
+        offset = np.array([b, 0, 0])
         #offset = np.array([0, 0, 0])
         v_ref = q_offset.copy() + offset
         vpcd1 = vpcd1 + offset

@@ -40,3 +40,5 @@ src/ndf_robot/data/training_data/*/*.npz
 *.pth
 *.p
 logs/*
+
+*.mtl
